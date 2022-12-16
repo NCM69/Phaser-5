@@ -23,7 +23,7 @@
             physics: {
                 default: 'arcade',
                 arcade: {
-                    gravity: { y: 500 },
+                    gravity: { y: 515 },
                     debug: false
                 }
             },
@@ -65,9 +65,9 @@
 
             platforms.create(1080, 450, 'ground')
             platforms.create(1600, 400, 'ground');
-            platforms.create(700, 150, 'ground');   //Créationde plateformes
-            platforms.create(800, 100, 'ground');
-            platforms.create(700, 150, 'ground');
+            platforms.create(1075, 300, 'ground');   //Créationde plateformes
+            platforms.create(200, 100, 'ground');
+            platforms.create(650, 200, 'ground');
 
             player = this.physics.add.sprite(100, 450, 'dude');
 
@@ -101,7 +101,7 @@
 
             stars = this.physics.add.group({
                 key: 'star',
-                repeat: 11,
+                repeat: 12,
                 setXY: { x: 12, y: 0, stepX: 70 }
             });
 
