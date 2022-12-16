@@ -34,7 +34,7 @@
             }
         };
 
-        var onOutOfBounds
+       
         var player;
         var stars;
         var bombs;
@@ -52,6 +52,7 @@
             this.load.image('star', 'assets/star.png');
             this.load.image('bomb', 'assets/bomb.png');
             this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+            this.load.image('J', 'assets/j.png');
         }
 
         function create() {
@@ -68,7 +69,8 @@
             platforms.create(1075, 300, 'ground');   //Créationde plateformes
             platforms.create(200, 100, 'ground');
             platforms.create(650, 200, 'ground');
-
+            platforms.create(1800, 650, 'J');
+            
             player = this.physics.add.sprite(100, 450, 'dude');
 
             player.setBounce(0.2);
@@ -123,12 +125,13 @@
 
             this.physics.add.overlap(player, stars, collectStar, null, this);
 
-            this.physics.add.collider(player, bombs, hitBomb, falldown, null, this);
+            this.physics.add.collider(player, bombs, hitBomb, null, this);
 
        
 }
 
         function update() {
+            
             if (gameOver) {
                 return;
             }
@@ -181,7 +184,8 @@
             }
         }
 
-        function hitBomb(player, bomb) {
+        function hitBomb(player, bomb) 
+        {
             this.physics.pause();
 
             player.setTint(0xff0000);
@@ -189,21 +193,13 @@
             player.anims.play('turn');
 
             gameOver = true;
-
-      
+            location.reload()
+            this.game.reload()
         }
+      
+  
 
-        function falldown(player)
-{
-    console.log(player)    
-    player.checkWorldBounds = true;
-        player.events.onOutOfBounds.add(function () { //fonctionne pas encore
-    alert('Game over!');
-    location.reload();
-  }, this);
-}
-
-    </script>
+</script>
 
 </body>
 
