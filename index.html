@@ -43,10 +43,10 @@
         var score = 0;
         var gameOver = false;
         var scoreText;
+
         var game = new Phaser.Game(config);
 
         function preload() {
-            this.load.audio('musique', 'assets/Jeu.ogg');
             this.load.image('background', 'assets/background.png');
             this.load.image('ground', 'assets/Platforme.png');
             this.load.image('star', 'assets/star.png');
@@ -56,11 +56,6 @@
         }
 
         function create() {
-            
-            musique_de_fond.play();
-            var musique_de_fond;
-            musique_de_fond = this.sound.add('background');
-            
             this.add.image(900, 250, 'background');
 
             platforms = this.physics.add.staticGroup();
