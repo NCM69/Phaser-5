@@ -59,6 +59,9 @@
 
         function create() {
             
+            musique_de_fond.play();
+            musique_de_fond = this.sound.add('background');
+            
             this.add.image(900, 250, 'background');
 
             platforms = this.physics.add.staticGroup();
@@ -75,11 +78,8 @@
             platforms.create(1800, 650, 'J');
             
             player = this.physics.add.sprite(100, 450, 'dude');
-
+            player.setCollideWorldBounds(true); 
             player.setBounce(0.2);
-            player.setCollideWorldBounds(true);
-            musique_de_fond = this.sound.add('background');
-            musique_de_fond.play(); 
 
 
             
