@@ -57,6 +57,8 @@
         }
 
         function create() {
+            var musique_de_fond;
+            musique_de_fond = this.sound.add('background');
             this.add.image(900, 250, 'background');
 
             platforms = this.physics.add.staticGroup();
