@@ -42,7 +42,6 @@
         var cursors;
         var score = 0;
         var gameOver = false;
-        var musique_de_fond;
         var scoreText;
 
         var game = new Phaser.Game(config);
@@ -54,14 +53,9 @@
             this.load.image('bomb', 'assets/bomb.png');
             this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
             this.load.image('J', 'assets/j.png');
-            this.load.audio('background', 'assets/guile.mp3');
         }
 
         function create() {
-            
-            musique_de_fond.play();
-            musique_de_fond = this.sound.add('background');
-            
             this.add.image(900, 250, 'background');
 
             platforms = this.physics.add.staticGroup();
@@ -78,10 +72,9 @@
             platforms.create(1800, 650, 'J');
             
             player = this.physics.add.sprite(100, 450, 'dude');
-            player.setCollideWorldBounds(true); 
+
             player.setBounce(0.2);
-
-
+            player.setCollideWorldBounds(true);
             
 
 
