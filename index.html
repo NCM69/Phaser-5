@@ -43,7 +43,7 @@
         var score = 0;
         var gameOver = false;
         var scoreText;
-        var play
+
         var game = new Phaser.Game(config);
 
         function preload() {
@@ -58,8 +58,7 @@
 
         function create() {
             var musique_de_fond;
-            musique_de_fond.play();
-            musique_de_fond = this.sound.add('background');
+            
             this.add.image(900, 250, 'background');
 
             platforms = this.physics.add.staticGroup();
