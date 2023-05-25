@@ -37,6 +37,7 @@
        
         var player;
         var stars;
+        var musique_de_fond;
         var bombs;
         var platforms;
         var cursors;
@@ -53,6 +54,7 @@
             this.load.image('bomb', 'assets/bomb.png');
             this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
             this.load.image('J', 'assets/j.png');
+            this.load.audio('background', 'assets/Jeu.mp3');
         }
 
         function create() {
@@ -75,6 +77,8 @@
 
             player.setBounce(0.2);
             player.setCollideWorldBounds(true);
+            musique_de_fond = this.sound.add('background');
+            musique_de_fond.play();
             
 
 
