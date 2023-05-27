@@ -1,35 +1,51 @@
 <!doctype html>
 <html lang="fr">
 
-@@ -13,14 +13,14 @@
+<head>
+    <meta charset="UTF-8" />
+    <title>Phazer 5</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
     
     
-
-
     <script type="text/javascript">
 
         var config = {
             type: Phaser.AUTO,
             width: 1280 ,
             height: 1080 ,
-            width: 1280,
-            height: 1080,
             physics: {
                 default: 'arcade',
                 arcade: {
-@@ -35,7 +35,7 @@
+                    gravity: { y: 515 },
+                    debug: false
+                }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
             }
         };
 
        
-
         var player;
         var stars;
         var bombs;
-@@ -49,20 +49,23 @@
+        var platforms;
+        var cursors;
+        var score = 0;
+        var gameOver = false;
+        var scoreText;
+        var musique_de_fond;
+
         var game = new Phaser.Game(config);
 
         function preload() {
@@ -41,34 +57,27 @@
             this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
             this.load.image('J', 'assets/j.png');
             this.load.audio('background', 'assets/jeu.mp3');
-            this.load.image('background', 'assets/image/background.png');
-            this.load.image('ground', 'assets/image/Platforme.png');
-            this.load.image('star', 'assets/image/star.png');
-            this.load.image('bomb', 'assets/image/bomb.png');
-            this.load.spritesheet('dude', 'assets/image/dude.png', { frameWidth: 32, frameHeight: 48 });
-            this.load.image('J', 'assets/image/j.png');
-
-            // Pré-charger le son:
-            this.load.audio('sound', 'assets/sons/jeu.mp3');
         }
 
         function create() {
             var musique_de_fond;
-
-            // Lancer le son:
-            var musique_de_fond = this.sound.add('sound');
             musique_de_fond.play();
             
-
             this.add.image(900, 250, 'background');
 
             platforms = this.physics.add.staticGroup();
-@@ -77,12 +80,12 @@
+
+
+            platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+
+
+            platforms.create(100, 450, 'ground')
+            platforms.create(650, 400, 'ground');
+            platforms.create(1075, 300, 'ground');   //Créationde plateformes
             platforms.create(200, 115, 'ground');
             platforms.create(650, 200, 'ground');
             platforms.create(1800, 650, 'J');
             
-
             player = this.physics.add.sprite(100, 450, 'dude');
 
             player.setBounce(0.2);
@@ -77,56 +86,133 @@
 
 
 
+            this.anims.create({
+                key: 'left',
+                frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+                frameRate: 10,
+                repeat: -1
+            });
 
-@@ -133,17 +136,10 @@
+            this.anims.create({
+                key: 'turn',
+                frames: [{ key: 'dude', frame: 4 }],
+                frameRate: 20
+            });
+
+            this.anims.create({
+                key: 'right',
+                frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            cursors = this.input.keyboard.createCursorKeys();
+
+            stars = this.physics.add.group({
+                key: 'star',
+                repeat: 13,
+                setXY: { x: 20, y: 0, stepX: 70 }
+            });
+
+            stars.children.iterate(function (child) {
+
+                child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+            });
+
+            bombs = this.physics.add.group();
+
+
+            scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
+
+            this.physics.add.collider(player, platforms);
+            this.physics.add.collider(stars, platforms);   //collition entre joueur,étoiles, bombes et platforme
+            this.physics.add.collider(bombs, platforms);
+
             this.physics.add.overlap(player, stars, collectStar, null, this);
 
             this.physics.add.collider(player, bombs, hitBomb, null, this);
-
+            
             musique_de_fond.play();
-
+        
             var musique_de_fond
-
+        
             musique_de_fond = this.sound.add('background');
-
+       
 }
-        }
 
         function update() {
             
-
             if (gameOver) {
                 return;
             }
-@@ -191,13 +187,12 @@
+
+            if (cursors.left.isDown) {
+                player.setVelocityX(-160);
+
+                player.anims.play('left', true);
+            }
+            else if (cursors.right.isDown) {
+                player.setVelocityX(160);
+
+                player.anims.play('right', true);            //diréction du personnage
+            }
+            else {
+                player.setVelocityX(0);
+
+                player.anims.play('turn');
+            }
+
+            if (cursors.up.isDown && player.body.touching.down) {
+                player.setVelocityY(-330);
+            }
+        }
+
+        function collectStar(player, star) {
+            star.disableBody(true, true);
+
+
+            score += 10;
+            scoreText.setText('Score: ' + score);
+
+            if (stars.countActive(true) === 0) {     //score
+
+                stars.children.iterate(function (child) {
+
+                    child.enableBody(true, child.x, 0, true, true);
+
+                });
+
+                var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+                var bomb = bombs.create(x, 16, 'bomb');
+                bomb.setBounce(1);
                 bomb.setCollideWorldBounds(true);
                 bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);          // config des bombes
                 bomb.allowGravity = false;
             
-
 
             }
         }
 
         function hitBomb(player, bomb) 
         {
-        function hitBomb(player, bomb) {
             this.physics.pause();
 
             player.setTint(0xff0000);
-@@ -208,11 +203,11 @@
+
+            player.anims.play('turn');
+
+            gameOver = true;
             location.reload()
             this.game.reload()
         }
-
-
+      
+  
 
 </script>
 
-
-    </script>
-
 </body>
 
-</html>
 </html>
