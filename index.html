@@ -56,25 +56,13 @@
             this.load.image('bomb', 'assets/bomb.png');
             this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
             this.load.image('J', 'assets/j.png');
-<<<<<<< HEAD
-    
-=======
             this.load.audio('background', 'assets/jeu.mp3');
->>>>>>> ada716c5c595d6b4a68bb3f020912006deab2b4f
         }
 
         function create() {
-<<<<<<< HEAD
-            
-            musique_de_fond.play();  
-
-            musique_de_fond = this.sound.add('background');
-            
-=======
             var musique_de_fond;
             musique_de_fond.play();
             
->>>>>>> ada716c5c595d6b4a68bb3f020912006deab2b4f
             this.add.image(900, 250, 'background');
 
             platforms = this.physics.add.staticGroup();
